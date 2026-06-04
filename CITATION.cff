@@ -22,6 +22,7 @@ authors:
     affiliation: "Northwest Missouri State University, School of Computer Science and Information Systems, Maryville, MO, USA"
 - family-names: Massaquoi
     given-names: Ralph
+    orcid: "https://orcid.org/0000-0001-6165-7389"
 repository-code: "https://github.com/nwmgraspr/datafun-04-notebooks"
 url: "https://github.com/nwmgraspr/datafun-04-notebooks"
 license: MIT
