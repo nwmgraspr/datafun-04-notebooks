@@ -467,7 +467,8 @@ def make_plots(df_clean: pd.DataFrame) -> None:
         )
 
         box_plt.set_title(f"{y_col} by {group_col}")
-        
+
+
 # === Section 9. Summary and Next Steps ===
 
 
