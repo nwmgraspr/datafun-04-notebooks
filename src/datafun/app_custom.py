@@ -1,4 +1,4 @@
-"""app_case.py - Project script (example).
+"""app_custom.py - Project script (example).
 
 Author: Denise Case, Ralph Massaquoi
 Date: 2026-04
