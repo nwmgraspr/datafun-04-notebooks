@@ -425,84 +425,49 @@ From this heatmap, we can see that flipper_length_mm and body_mass_g show strong
 
 
 def make_plots(df_clean: pd.DataFrame) -> None:
-    """Create simple, notebook-friendly plots.
+    """Create simple visualizations from cleaned data."""
 
-    WHY: Visualizations reveal patterns not obvious in tables.
-    CUSTOM: Charts will vary depending on the dataset
-            and questions of interest.
+    LOG.info("Creating visualizations")
 
-    Common charts include:
-    1. A scatter plot to see relationships between two variables
-    2. A box plot to compare distributions across groups
+    # Pick numeric columns automatically (more flexible)
+    numeric_cols = df_clean.select_dtypes(include="number").columns
 
-    A scatter plot shows the relationship between two numeric variables.
-    In this example:
-    - Each dot is one data record shown as x vs y.
-    - Color (hue) provides a third dimension.
+    if len(numeric_cols) < 2:
+        LOG.warning("Not enough numeric columns for scatter plot.")
+        return
 
-    A box plot shows the distribution of one numeric variable across groups.
-    - The box shows the middle 50% of values.
-    - The line inside the box is the median.
-    - The whiskers show the range. Dots beyond the whiskers are outliers.
+    x_col = numeric_cols[0]
+    y_col = numeric_cols[1]
 
-    """
-    LOG.info("---- Creating Scatter Plot to see Relationships ------")
-    LOG.info("----   Use clean dataframe ---------------------------")
-    LOG.info("----   Set x to flipper length -----------------------")
-    LOG.info("----   Set y to bill length --------------------------")
-    LOG.info("----   Set the hue (color mapping) to the group column --")
+    # Pick a grouping column if available
+    group_col = GROUP_COL if GROUP_COL in df_clean.columns else None
 
-    # Open a fresh blank canvas before a new chart
+    # --- Scatter Plot ---
     plt.figure()
 
-    # Use a scatterplot() to visualize relationships between two variables (x vs y)
     scatter_plt: Axes = sns.scatterplot(
         data=df_clean,
-        x="flipper_length_mm",
-        y="bill_length_mm",
-        hue=GROUP_COL,
+        x=x_col,
+        y=y_col,
+        hue=group_col if group_col else None,
     )
-    scatter_plt.set_xlabel("Flipper length (mm)")
-    scatter_plt.set_ylabel("Bill length (mm)")
-    scatter_plt.set_title("Flipper length vs Bill length (by species)")
 
-    # IN NOTEBOOK: SHOW AS YOU GO
-    #      plt.show() displays the current chart and closes it
-    #      Call this before starting a new chart
-    #      or next chart will be drawn on top of this one
-    # IN SCRIPT: WAIT TO SHOW TILL THE END
-    #      Do not call plt.show() here - let figures accumulate
-    #      so all charts display together with sequential Figure numbers.
-    #      plt.show() is called once at the end of make_plots()
-    # plt.show()
+    scatter_plt.set_xlabel(x_col)
+    scatter_plt.set_ylabel(y_col)
+    scatter_plt.set_title(f"{y_col} vs {x_col}")
 
-    LOG.info("------ Creating Box Plot to see Distribution: ---------")
-    LOG.info("------   Use clean dataframe --------------------------")
-    LOG.info("------   Set x to the group column --------------------")
-    LOG.info("------   Set y to flipper length ----------------------")
+    # --- Box Plot ---
+    if group_col:
+        plt.figure()
 
-    # Open a fresh blank canvas before a new chart
-    plt.figure()
+        box_plt: Axes = sns.boxplot(
+            data=df_clean,
+            x=group_col,
+            y=y_col,
+        )
 
-    # Use a boxplot() to visualize the distribution of a numeric variable across groups
-    box_plt: Axes = sns.boxplot(
-        data=df_clean,
-        x=GROUP_COL,
-        y="flipper_length_mm",
-    )
-    box_plt.set_title("Flipper length by species")
-
-    # IN NOTEBOOK: SHOW AS YOU GO
-    #      plt.show() displays the current chart and closes it
-    #      Call this before starting a new chart
-    #      or next chart will be drawn on top of this one
-    # IN SCRIPT: WAIT TO SHOW TILL THE END
-    #      Do not call plt.show() here - let figures accumulate
-    #      so all charts display together with sequential Figure numbers.
-    #      plt.show() is called once at the end of make_plots()
-    # plt.show()
-
-
+        box_plt.set_title(f"{y_col} by {group_col}")
+        
 # === Section 9. Summary and Next Steps ===
 
 
