@@ -1,7 +1,7 @@
 """app_custom.py - Project script (example).
 
-Author: Denise Case, Ralph Massaquoi
-Date: 2026-04
+Author: Ralph Massaquoi
+Date: 2026-06
 
 Purpose:
     - exploratory data analysis (EDA)
